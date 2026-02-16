@@ -114,3 +114,7 @@ The test suite verifies the following core behaviors:
 **⭐⭐⭐⭐ (4/5 stars)** - The system's core scheduling logic is reliable and tested.
 
 The test suite covers the most critical workflows (sorting, conflicts, recurring tasks) and all 6 tests pass consistently. Edge cases like empty task lists, invalid task IDs, and timezone handling would be tested next with more time.
+
+## 📸 Demo
+
+<a href="pawpal_uml.png" target="_blank"><img src='pawpal_uml.png' title='PawPal App' width='600' alt='PawPal App' /></a>

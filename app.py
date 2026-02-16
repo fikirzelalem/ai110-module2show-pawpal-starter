@@ -50,6 +50,13 @@ species = st.selectbox("Species", ["dog", "cat", "other"])
 st.markdown("### Tasks")
 st.caption("Add a few tasks. In your final version, these should feed into your scheduler.")
 
+if "owner" not in st.session_state:
+    st.session_state.owner = Owner(
+        name="",
+        email="placeholder@email.com",
+        phone="0000000000"
+    )
+
 if "tasks" not in st.session_state:
     st.session_state.tasks = []
 
@@ -79,13 +86,13 @@ st.caption("This button should call your scheduling logic once you implement it.
 
 if st.button("Generate schedule"):
 
-    # Create owner and pet objects
-    owner = Owner(
-        name=owner_name,
-        email="placeholder@email.com",
-        phone="0000000000"
-    )
+    # Use persistent owner from session_state
+    st.session_state.owner.name = owner_name
 
+    # Clear previous pets to avoid duplicates on rerun
+    st.session_state.owner.pets = []
+
+    # Create pet object
     pet = Pet(
         name=pet_name,
         species=species,
@@ -93,7 +100,7 @@ if st.button("Generate schedule"):
         date_of_birth=date(2020, 1, 1)
     )
 
-    owner.add_pet(pet)
+    st.session_state.owner.add_pet(pet)
 
     # Create scheduler (acts as the "brain")
     scheduler = Scheduler()

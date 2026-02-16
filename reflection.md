@@ -1,19 +1,39 @@
 # PawPal+ Project Reflection
 
 ## 1. System Design
+### Core User Actions
+
+1. Add a pet to the system.
+2. Schedule a task (feeding, walk, medication) for a pet.
+3. View a sorted daily schedule of the tasks.
 
 **a. Initial design**
 
-- Briefly describe your initial UML design.
-- What classes did you include, and what responsibilities did you assign to each?
+My initial UML design included four main classes: Owner, Pet, Task, and Scheduler.
+
+The Owner class stores the owner’s name and the list of pets. It is responsible for adding pets and retrieving all of the tasks across each pets.
+
+The Pet class stores a pet’s name and the species, along with a list of the tasks. It is responsible for adding new tasks and retrieving its tasks.
+
+The Task class represents a single care activity. It stores the title, the duration in minutes, its priority level, the scheduled time, and the completion status. It includes a method to mark a task as complete.
+
+The Scheduler class acts as the system’s logic layer. It retrieves tasks from the Owner and provides functionality to sort tasks by time, sort tasks by priority, and it detects if there are any scheduling conflicts.
+
+This specific structure separates responsibilities clearly and follows object oriented design principles.
 
 **b. Design changes**
 
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
+During implementation, I refined my design to focus on the core scheduling behaviors that are required by the project. Initially, I considered adding more advanced features such as recurring tasks and additional metadata, however, I decided to simplify the system to keep the logic clean and aligned with the minimum requirements. This made the system easier to test and maintain while still demonstrating algorithmic scheduling behavior.
+
+
+**c. What I changed**
+
+- **Code:** Implemented class skeletons and basic logic in `pawpal_system.py` for `Owner`, `Pet`, `Task`, and `Scheduler` following the UML design.
+- **Tests:** Updated `tests/test_pawpal.py` to match the current constructors and field names; tests now use `datetime` for `scheduled_time` and cover sorting by time, conflict detection, and `mark_complete()` behavior.
+- **Doc:** Added this summary to `reflection.md` to document implementation choices and the collaboration with AI during design and refactoring.
+- **Notes:** Tests include a small `sys.path` insertion for local test discovery; consider removing or replacing with a package-friendly import when publishing.
 
 ---
-
 ## 2. Scheduling Logic and Tradeoffs
 
 **a. Constraints and priorities**

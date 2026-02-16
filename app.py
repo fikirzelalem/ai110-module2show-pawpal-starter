@@ -1,5 +1,8 @@
 import streamlit as st
 
+from pawpal_system import Owner, Pet, Task, Scheduler
+
+
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 
 st.title("🐾 PawPal+")
@@ -74,9 +77,38 @@ st.subheader("Build Schedule")
 st.caption("This button should call your scheduling logic once you implement it.")
 
 if st.button("Generate schedule"):
-    st.warning(
-        "Not implemented yet. Next step: create your scheduling logic (classes/functions) and call it here."
-    )
+
+    # Create owner and pet objects
+    owner = Owner(name=owner_name)
+    pet = Pet(name=pet_name, species=species)
+    owner.add_pet(pet)
+
+    # Convert UI tasks into Task objects
+    for t in st.session_state.tasks:
+        new_task = Task(
+            title=t["title"],
+            duration_minutes=t["duration_minutes"],
+            priority=t["priority"],
+            time="08:00"  # default time for demo
+        )
+        pet.add_task(new_task)
+
+    scheduler = Scheduler(owner)
+
+    sorted_tasks = scheduler.sort_by_priority()
+    conflicts = scheduler.detect_conflicts()
+
+    st.success("Schedule Generated!")
+
+    st.subheader("Sorted Tasks (by priority)")
+    for task in sorted_tasks:
+        st.write(f"{task.title} — {task.priority}")
+
+    if conflicts:
+        st.warning("Conflicts detected:")
+        for warning in conflicts:
+            st.write(warning)
+
     st.markdown(
         """
 Suggested approach:

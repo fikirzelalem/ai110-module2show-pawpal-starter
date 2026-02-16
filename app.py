@@ -1,6 +1,7 @@
 import streamlit as st
-
 from pawpal_system import Owner, Pet, Task, Scheduler
+from datetime import date, datetime
+
 
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
@@ -79,21 +80,44 @@ st.caption("This button should call your scheduling logic once you implement it.
 if st.button("Generate schedule"):
 
     # Create owner and pet objects
-    owner = Owner(name=owner_name)
-    pet = Pet(name=pet_name, species=species)
+    owner = Owner(
+        name=owner_name,
+        email="placeholder@email.com",
+        phone="0000000000"
+    )
+
+    pet = Pet(
+        name=pet_name,
+        species=species,
+        breed="Unknown",
+        date_of_birth=date(2020, 1, 1)
+    )
+
     owner.add_pet(pet)
 
+    # Create scheduler (acts as the "brain")
+    scheduler = Scheduler()
+
     # Convert UI tasks into Task objects
-    for t in st.session_state.tasks:
+    for index, t in enumerate(st.session_state.tasks):
+
+        scheduled_time = datetime.now().replace(
+            hour=8 + index,
+            minute=0,
+            second=0,
+            microsecond=0
+        )
+
         new_task = Task(
             title=t["title"],
-            duration_minutes=t["duration_minutes"],
-            priority=t["priority"],
-            time="08:00"  # default time for demo
+            description="Generated from UI",
+            category="general",
+            scheduled_time=scheduled_time,
+            priority=t["priority"]
         )
-        pet.add_task(new_task)
 
-    scheduler = Scheduler(owner)
+        pet.add_task(new_task)
+        scheduler.add_task(new_task)
 
     sorted_tasks = scheduler.sort_by_priority()
     conflicts = scheduler.detect_conflicts()
@@ -102,12 +126,16 @@ if st.button("Generate schedule"):
 
     st.subheader("Sorted Tasks (by priority)")
     for task in sorted_tasks:
-        st.write(f"{task.title} — {task.priority}")
+        st.write(
+            f"{task.scheduled_time.strftime('%H:%M')} — "
+            f"{task.title} ({task.priority})"
+        )
 
     if conflicts:
         st.warning("Conflicts detected:")
         for warning in conflicts:
             st.write(warning)
+
 
     st.markdown(
         """

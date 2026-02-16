@@ -60,3 +60,40 @@ if conflicts:
         print(warning)
 else:
     print("No conflicts detected.")
+
+print("\n--- Testing Recurring Tasks ---")
+# Create a daily recurring task
+recurring_task = Task(
+    title="Daily Medication",
+    description="Give Mochi daily medication",
+    category="medication",
+    scheduled_time=datetime.now().replace(hour=9, minute=0, second=0),
+    recurrence_days=1,  # Daily recurrence
+    priority="high"
+)
+
+dog.add_task(recurring_task)
+scheduler.add_task(recurring_task)
+
+print(f"Created recurring task: '{recurring_task.title}' at {recurring_task.scheduled_time.strftime('%Y-%m-%d %H:%M')}")
+print(f"  - Recurrence: Every {recurring_task.recurrence_days} day(s)")
+print(f"  - Task ID: {recurring_task.task_id}")
+
+# Mark the recurring task complete (should auto-create next occurrence)
+print(f"\nMarking '{recurring_task.title}' as complete...")
+new_task = scheduler.complete_task_and_reschedule(recurring_task.task_id, dog)
+
+if new_task:
+    print(f"✓ Task completed! New occurrence auto-created:")
+    print(f"  - Next occurrence: {new_task.scheduled_time.strftime('%Y-%m-%d %H:%M')}")
+    print(f"  - New Task ID: {new_task.task_id}")
+    print(f"  - Added to scheduler and pet's task list")
+else:
+    print("Task completed (no recurrence)")
+
+# Show updated schedule
+print("\n--- Updated Schedule (with recurring task) ---")
+for task in scheduler.sort_by_time():
+    status = "✓ Complete" if task.is_completed else "Pending"
+    recur = f" (Recurs every {task.recurrence_days} days)" if task.recurrence_days > 0 else ""
+    print(f"{task.scheduled_time.strftime('%Y-%m-%d %H:%M')} - {task.title} [{status}]{recur}")

@@ -16,9 +16,32 @@ class Task:
     recurrence_days: int = 0  # 0 = no recurrence, >0 = recurring every N days
     priority: str = "medium"  # "low", "medium", "high"
 
-    def mark_complete(self):
-        """Mark this task as completed."""
+    def mark_complete(self) -> Optional['Task']:
+        """Mark this task as completed.
+
+        If the task is recurring (recurrence_days > 0), automatically creates
+        and returns a new Task for the next occurrence.
+
+        Returns:
+            Optional[Task]: New task for next occurrence if recurring, None otherwise.
+        """
         self.is_completed = True
+
+        if self.recurrence_days > 0:
+            next_time = self.get_next_occurrence()
+            if next_time:
+                # Create a new task with same properties but new scheduled time
+                new_task = Task(
+                    title=self.title,
+                    description=self.description,
+                    category=self.category,
+                    scheduled_time=next_time,
+                    recurrence_days=self.recurrence_days,
+                    priority=self.priority
+                )
+                return new_task
+
+        return None
 
     def mark_incomplete(self):
         """Mark this task as incomplete."""
@@ -170,3 +193,36 @@ class Scheduler:
             t for t in self.all_tasks
             if today <= t.scheduled_time.date() <= end_date
         ]
+
+    def complete_task_and_reschedule(self, task_id: str, pet: Optional['Pet'] = None) -> Optional[Task]:
+        """Mark a task complete and automatically create next occurrence if recurring.
+
+        This method handles the complete workflow for recurring tasks:
+        1. Finds the task by ID
+        2. Marks it complete (which may create a new task)
+        3. Adds the new task to the scheduler
+        4. Optionally adds the new task to the pet's task list
+
+        Args:
+            task_id: The ID of the task to complete
+            pet: Optional Pet object to add the new recurring task to
+
+        Returns:
+            Optional[Task]: The new recurring task if created, None otherwise
+        """
+        # Find the task in the scheduler
+        task = next((t for t in self.all_tasks if t.task_id == task_id), None)
+
+        if not task:
+            return None
+
+        # Mark complete (returns new task if recurring)
+        new_task = task.mark_complete()
+
+        # If a new recurring task was created, add it to scheduler and pet
+        if new_task:
+            self.add_task(new_task)
+            if pet:
+                pet.add_task(new_task)
+
+        return new_task

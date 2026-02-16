@@ -24,7 +24,7 @@ Your final app should:
 
 ## Smarter Scheduling
 
-PawPal+ includes intelligent algorithmic features to help pet owners manage their pets' care routines:
+PawPal+ includes intelligent algorithmic features to help pet owners manage their pets' care routines
 
 ### Core Features
 

@@ -105,6 +105,7 @@ When implementing conflict detection, Copilot initially suggested tracking task 
 **How I evaluated it:**
 I asked Copilot to compare the complexity tradeoffs between "exact time matching" vs "duration overlap detection." After seeing that duration detection would require restructuring my Task class and implementing nested loops, I decided the simpler approach was better aligned with the project requirements and my current architecture.
 
+Starting a new chat session for each phase (for Designing, Implementation, and Testing) helped me stay focused and prevented Copilot from suggesting solutions from earlier contexts that no longer applied to the current one.
 ---
 
 ## 4. Testing and Verification

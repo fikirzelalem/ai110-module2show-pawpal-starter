@@ -75,13 +75,30 @@ This tradeoff is reasonable for PawPal+ because:
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
+I tested six core behaviors in the PawPal+ system:
+
+1. **Sorting by Time** - Verifies tasks are ordered chronologically, which is essential for owners to see what needs to happen next
+2. **Conflict Detection** - Ensures the scheduler flags tasks scheduled at the same time, preventing double-booking
+3. **Task Completion** - Confirms the `mark_complete()` method properly updates task status
+4. **Task Addition to Pets** - Validates that adding tasks correctly increases a pet's task count
+5. **Recurring Task Automation** - Tests that completing a daily task automatically creates the next occurrence
+6. **Non-Recurring Task Behavior** - Ensures one-time tasks don't duplicate when marked complete
+
+These tests are important because they verify the "brain" of the scheduling system. If sorting or conflict detection fails, the entire app becomes unreliable. The recurring task tests are critical because they validate the most complex algorithmic feature.
 
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
+I am **very confident (4/5 stars)** that my scheduler works correctly for the core workflows.
+
+All six tests pass consistently, and I've verified the behavior through both automated tests and the CLI demo script (`main.py`). The Streamlit UI successfully integrates with the backend logic.
+
+**Edge cases I would test next:**
+
+1. **Empty task lists** - What happens when a pet has no tasks or the scheduler is empty?
+2. **Invalid task IDs** - How does `complete_task_and_reschedule()` handle a non-existent task ID?
+3. **Multiple pets with overlapping tasks** - Does conflict detection work across different pets?
+4. **Tasks scheduled in the past** - How does the system handle overdue tasks that are weeks old?
+5. **Weekly/monthly recurrence** - Testing recurring tasks with `recurrence_days=7` or `recurrence_days=30`
 
 ---
 

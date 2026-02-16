@@ -22,6 +22,41 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
+## Smarter Scheduling
+
+PawPal+ includes intelligent algorithmic features to help pet owners manage their pets' care routines:
+
+### Core Features
+
+**📊 Sorting & Filtering**
+- **Sort by Time**: Tasks are organized chronologically to see what needs to happen next
+- **Sort by Priority**: High-priority tasks (medication, appointments) are displayed first
+- **Filter by Status**: View only pending tasks or see completed tasks for the day
+- **Filter by Date Range**: See upcoming tasks for the next N days
+
+**⚠️ Conflict Detection**
+- Automatically detects when two tasks are scheduled at the exact same time
+- Displays clear warning messages to help owners reschedule conflicting tasks
+- Uses efficient O(n log n) algorithm with time-based hash lookup
+
+**🔄 Recurring Task Automation**
+- Daily, weekly, or custom interval task support
+- When a recurring task is marked complete, the next occurrence is automatically created
+- Maintains all task properties (priority, category, description) for the new occurrence
+- Seamlessly adds new tasks to both the scheduler and pet's task list
+
+**🎯 Priority-Based Scheduling**
+- Tasks are categorized by priority levels: Low, Medium, High
+- Overdue tasks are automatically surfaced to the top of the schedule
+- Helps owners focus on the most important care activities first
+
+### Technical Implementation
+
+The scheduling logic is powered by the `Scheduler` class in `pawpal_system.py`, which provides:
+- Efficient task sorting and filtering algorithms
+- Lightweight conflict detection without complex overlap calculations
+- Automatic recurring task generation through the `complete_task_and_reschedule()` method
+
 ## Getting started
 
 ### Setup

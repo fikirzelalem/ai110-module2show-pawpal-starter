@@ -23,15 +23,17 @@ This specific structure separates responsibilities clearly and follows object or
 
 **b. Design changes**
 
-During implementation, I refined my design to focus on the core scheduling behaviors that are required by the project. Initially, I considered adding more advanced features such as recurring tasks and additional metadata, however, I decided to simplify the system to keep the logic clean and aligned with the minimum requirements. This made the system easier to test and maintain while still demonstrating algorithmic scheduling behavior.
+During implementation, I refined my design to focus on the core scheduling behaviors that are required by the project. 
+Copilot suggested linking Task to Pet and improving conflict detection to handle overlapping durations. I evaluated these suggestions but chose not to implement them because the current design satisfies the project requirements and tests pass. I documented these as potential future improvements.
+Initially, I considered adding more advanced features such as recurring tasks and additional metadata, however, I decided to simplify the system to keep the logic clean and aligned with the minimum requirements. This made the system easier to test and maintain while still demonstrating algorithmic scheduling behavior.
 
 
 **c. What I changed**
 
-- **Code:** Implemented class skeletons and basic logic in `pawpal_system.py` for `Owner`, `Pet`, `Task`, and `Scheduler` following the UML design.
-- **Tests:** Updated `tests/test_pawpal.py` to match the current constructors and field names; tests now use `datetime` for `scheduled_time` and cover sorting by time, conflict detection, and `mark_complete()` behavior.
-- **Doc:** Added this summary to `reflection.md` to document implementation choices and the collaboration with AI during design and refactoring.
-- **Notes:** Tests include a small `sys.path` insertion for local test discovery; consider removing or replacing with a package-friendly import when publishing.
+- **Code:** I implemented class skeletons and basic logic in `pawpal_system.py` for `Owner`, `Pet`, `Task`, and `Scheduler` following the UML design.
+- **Tests:** I updated `tests/test_pawpal.py` to match the current constructors and field names; tests now use `datetime` for `scheduled_time` and cover sorting by time, conflict detection, and `mark_complete()` behavior.
+- **Doc:** I then added this summary for implementation choices and the collaboration with Copilot AI during design and refactoring.
+
 
 ---
 ## 2. Scheduling Logic and Tradeoffs
@@ -43,8 +45,15 @@ During implementation, I refined my design to focus on the core scheduling behav
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+My conflict detection algorithm only checks for exact time matches (e.g., two tasks both scheduled at 9:00 AM) rather than detecting overlapping durations.
+
+For example, if one task is scheduled at 9:00 AM for 30 minutes and another at 9:15 AM, my system won't flag this as a conflict even though they overlap in real time.
+
+This tradeoff is reasonable for PawPal+ because:
+1. The Task class doesn't include a duration field, only a scheduled_time
+2. Checking exact time matches is simple (O(n log n)) and catches the most obvious scheduling conflicts
+3. For a pet care app, owners can mentally manage minor overlaps between activities
+4. Adding duration-based overlap detection would require restructuring the Task class and implementing O(n²) comparison logic, which adds complexity without much benefit for this use case
 
 ---
 

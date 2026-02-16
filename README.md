@@ -115,8 +115,11 @@ The test suite verifies the following core behaviors:
 
 The test suite covers the most critical workflows (sorting, conflicts, recurring tasks) and all 6 tests pass consistently. Edge cases like empty task lists, invalid task IDs, and timezone handling would be tested next with more time.
 
-## UML Diagram png file
+## UML Diagram at the beginning
 
+<a href="uml_initial.png" target="_blank"><img src='uml_initial.png' title='PawPal App' width='600' alt='PawPal App' /></a>
+
+## Final UML diagram
 <a href="uml_final.png" target="_blank"><img src='uml_final.png' title='PawPal App' width='600' alt='PawPal App' /></a>
 
 ## 📸 Demo 

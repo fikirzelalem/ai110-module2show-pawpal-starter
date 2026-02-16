@@ -90,3 +90,24 @@ def test_mark_complete():
     task.mark_complete()
 
     assert task.is_completed is True
+
+def test_task_addition_to_pet():
+    pet = Pet(
+        name="Buddy",
+        species="dog",
+        breed="Beagle",
+        date_of_birth=date(2020, 1, 1)
+    )
+
+    task = Task(
+        title="Feed",
+        description="Dinner",
+        category="feeding",
+        scheduled_time=datetime(2026, 2, 15, 18, 0),
+        priority="medium",
+    )
+
+    initial_count = len(pet.tasks)
+    pet.add_task(task)
+
+    assert len(pet.tasks) == initial_count + 1
